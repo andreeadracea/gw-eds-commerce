@@ -33,7 +33,13 @@ const AUDIENCES = {
 // window.hlx.templates.add('/templates/my-template');
 
 // Add you plugins below
-// window.hlx.plugins.add('/plugins/my-plugin.js');
+window.hlx.plugins.add('experimentation', {
+  condition: () => getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length,
+  options: { audiences: AUDIENCES },
+  url: '/plugins/experimentation/src/index.js',
+});
 
 /**
  * Gets all the metadata elements that are in the given scope.
