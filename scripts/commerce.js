@@ -168,7 +168,6 @@ export async function performCatalogServiceQuery(query, variables, commerceLaunc
     if (commerceLaunchId) {
       headers['Commerce-Launch-Id'] = commerceLaunchId;
     }
-  }
 
   const apiCall = new URL(await getConfigValue('commerce-endpoint'));
   apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
