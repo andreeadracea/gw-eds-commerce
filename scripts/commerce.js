@@ -302,6 +302,23 @@ export async function getProduct(sku) {
   return productPromise;
 }
 
+export async function getProductVariation(sku, commerceLaunchId) {
+  if (productsCache[sku]) {
+    return productsCache[sku];
+  }
+  const rawProductPromise = performCatalogServiceQuery(productDetailQuery, { sku }, commerceLaunchId);
+  const productPromise = rawProductPromise.then((productData) => {
+    if (!productData?.products?.[0]) {
+      return null;
+    }
+
+    return productData?.products?.[0];
+  });
+
+  productsCache[sku] = productPromise;
+  return productPromise;
+}
+
 export async function trackHistory() {
   if (!getConsent('commerce-recommendations')) {
     return;
