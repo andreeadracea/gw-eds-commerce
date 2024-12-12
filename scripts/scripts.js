@@ -138,8 +138,6 @@ async function loadEager(doc) {
   await initializeDropins();
   decorateTemplateAndTheme();
 
-  //await window.hlx.plugins.run('loadEager');
-
   // Instrument experimentation plugin
   if (getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
@@ -149,7 +147,7 @@ async function loadEager(doc) {
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
 
-  await window.hlx.plugins.run('loadEager');
+  //await window.hlx.plugins.run('loadEager');
 
   window.adobeDataLayer = window.adobeDataLayer || [];
 
