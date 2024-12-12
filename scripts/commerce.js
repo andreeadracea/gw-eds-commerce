@@ -155,7 +155,6 @@ query($sku: String!) {
 
 export async function performCatalogServiceQuery(query, variables, commerceLaunchId) {
 
-  if (commerceLaunchId) {
     const headers = {
       'Content-Type': 'application/json',
       'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
@@ -166,17 +165,9 @@ export async function performCatalogServiceQuery(query, variables, commerceLaunc
       'x-api-key': await getConfigValue('commerce-x-api-key'),
       'Commerce-Launch-Id': commerceLaunchId,
     };
-  }
-  else {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
-      'Magento-Website-Code': await getConfigValue('commerce-website-code'),
-      'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
-      'Magento-Store-Code': await getConfigValue('commerce-store-code'),
-      'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
-      'x-api-key': await getConfigValue('commerce-x-api-key'),
-    };
+    if (commerceLaunchId) {
+      headers['Commerce-Launch-Id'] = commerceLaunchId;
+    }
   }
 
   const apiCall = new URL(await getConfigValue('commerce-endpoint'));
