@@ -140,7 +140,7 @@ async function loadEager(doc) {
   await initializeDropins();
   decorateTemplateAndTheme();
 
-  await window.hlx.plugins.run('loadEager');
+  //await window.hlx.plugins.run('loadEager');
 
   // Instrument experimentation plugin
   if (getMetadata('experiment')
@@ -150,6 +150,8 @@ async function loadEager(doc) {
     const { loadEager: runEager } = await import('../plugins/experimentation/src/index.js');
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
+
+  await window.hlx.plugins.run('loadEager');
 
   window.adobeDataLayer = window.adobeDataLayer || [];
 
@@ -261,7 +263,7 @@ async function loadLazy(doc) {
     import('./acdl/validate.js');
   }
 
-  window.hlx.plugins.run('loadLazy');
+  //window.hlx.plugins.run('loadLazy');
 
   trackHistory();
 
@@ -273,6 +275,7 @@ async function loadLazy(doc) {
     const { loadLazy: runLazy } = await import('../plugins/experimentation/src/index.js');
     await runLazy(document, { audiences: AUDIENCES }, pluginContext);
   }
+  window.hlx.plugins.run('loadLazy');
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 }
