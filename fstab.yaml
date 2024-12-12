@@ -1,5 +1,6 @@
 mountpoints:
   /: https://adobe.sharepoint.com/:f:/r/sites/MySite47/Shared%20Documents/starter-content-commerce
-  
+
 folders:
   /products/: /products/default
+  /products-variation/: /products-variation/default
