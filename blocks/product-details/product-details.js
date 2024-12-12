@@ -31,8 +31,14 @@ async function setJsonLdProduct(product) {
   const amount = priceRange?.minimum?.final?.amount || price?.final?.amount;
   const brand = attributes.find((attr) => attr.name === 'brand');
 
+  let commerceLaunchId;
+  let metaIsVariation = document.head.querySelector(`meta[name="isvariation"]`);
+  if (metaIsVariation) {
+    commerceLaunchId = metaIsVariation.getAttribute('content');
+  }
+
   // get variants
-  const { variants } = (await performCatalogServiceQuery(variantsQuery, { sku }))?.variants
+  const { variants } = (await performCatalogServiceQuery(variantsQuery, { sku }, commerceLaunchId))?.variants
     || { variants: [] };
 
   const ldJson = {
