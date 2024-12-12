@@ -143,7 +143,7 @@ async function loadEager(doc) {
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
     const sku = getSkuFromUrl();
-    const variation = getMetadata('isVariation');
+    const variation = getMetadata('isvariation');
     if (variation) {
       window.getProductPromise = getProductVariation(sku, variation);
     }

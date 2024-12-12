@@ -163,7 +163,6 @@ export async function performCatalogServiceQuery(query, variables, commerceLaunc
       'Magento-Store-Code': await getConfigValue('commerce-store-code'),
       'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
       'x-api-key': await getConfigValue('commerce-x-api-key'),
-      'Commerce-Launch-Id': commerceLaunchId,
     };
     if (commerceLaunchId) {
       headers['Commerce-Launch-Id'] = commerceLaunchId;
