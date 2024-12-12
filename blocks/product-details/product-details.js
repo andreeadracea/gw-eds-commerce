@@ -156,15 +156,29 @@ export default async function decorate(block) {
   productApi.setEndpoint(await getConfigValue('commerce-endpoint'));
 
   // Set Fetch Headers (Service)
-  productApi.setFetchGraphQlHeaders({
-    'Content-Type': 'application/json',
-    'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
-    'Magento-Website-Code': await getConfigValue('commerce-website-code'),
-    'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
-    'Magento-Store-Code': await getConfigValue('commerce-store-code'),
-    'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
-    'x-api-key': await getConfigValue('commerce-x-api-key'),
-  });
+  let metaIsVariation = document.head.querySelector(`meta[name="isvariation"]`);
+  if (metaIsVariation) {
+    productApi.setFetchGraphQlHeaders({
+      'Content-Type': 'application/json',
+      'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
+      'Magento-Website-Code': await getConfigValue('commerce-website-code'),
+      'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
+      'Magento-Store-Code': await getConfigValue('commerce-store-code'),
+      'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
+      'x-api-key': await getConfigValue('commerce-x-api-key'),
+      'Commerce-Launch-Id': metaIsVariation.getAttribute('content'),
+    });
+  } else {
+    productApi.setFetchGraphQlHeaders({
+      'Content-Type': 'application/json',
+      'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
+      'Magento-Website-Code': await getConfigValue('commerce-website-code'),
+      'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
+      'Magento-Store-Code': await getConfigValue('commerce-store-code'),
+      'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
+      'x-api-key': await getConfigValue('commerce-x-api-key'),
+    });
+  }
 
   events.on('eds/lcp', () => {
     if (!product) {
