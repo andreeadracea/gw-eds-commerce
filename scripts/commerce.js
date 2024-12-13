@@ -153,7 +153,7 @@ query($sku: String!) {
 
 /* Common functionality */
 
-export async function performCatalogServiceQuery(query, variables, commerceLaunchId) {
+export async function performCatalogServiceQuery(query, variables) {
 
     const headers = {
       'Content-Type': 'application/json',
@@ -164,8 +164,9 @@ export async function performCatalogServiceQuery(query, variables, commerceLaunc
       'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
       'x-api-key': await getConfigValue('commerce-x-api-key'),
     };
-    if (commerceLaunchId) {
-      headers['Commerce-Launch-Id'] = commerceLaunchId;
+    let variation = getVariationFromUrl();
+    if (variation) {
+      headers['Commerce-Launch-Id'] = variation;
     }
 
   const apiCall = new URL(await getConfigValue('commerce-endpoint'));
@@ -281,6 +282,12 @@ export function getSkuFromUrl() {
   const path = window.location.pathname;
   const result = path.match(/\/products.*\/[\w|-]+\/([\w|-]+)$/);
   return result?.[1];
+}
+
+export function getVariationFromUrl() {
+  const path = window.location.pathname;
+  const result = path.match(/\/products.*\/[\w|-]+\/([\w|-]+)\/([\w|-]+)$/);
+  return result?.[2];
 }
 
 const productsCache = {};
