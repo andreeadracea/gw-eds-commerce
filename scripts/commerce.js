@@ -284,7 +284,7 @@ export function getVariationFromUrl() {
   let path;
   const urlParams = new URLSearchParams(window.location.search);
   const myParam = urlParams.get('experiment');
-  if (myParam.includes('challenger')) {
+  if (myParam?.includes('challenger')) {
      path = getMetadata('experiment-variants');
   } else {
     path = window.location.pathname;
