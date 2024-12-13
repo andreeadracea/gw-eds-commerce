@@ -283,13 +283,13 @@ export function getVariationFromUrl() {
   //return urlParams.get('launchId');
   let path;
   const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get('garage-week/challenger-1');
+  const myParam = urlParams.get('garage-week%2Fchallenger-1');
   if (myParam) {
      path = getMetadata('experiment-variants');
   } else {
     path = window.location.pathname;
   }
-  
+
   const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)\/([\w|-]+)$/);
   return result?.[2];
 }
