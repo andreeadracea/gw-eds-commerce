@@ -283,7 +283,7 @@ export function getVariationFromUrl() {
   //return urlParams.get('launchId');
   let path;
   const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get('garage-week%2Fchallenger-1');
+  const myParam = urlParams.get('experiment');
   if (myParam) {
      path = getMetadata('experiment-variants');
   } else {
