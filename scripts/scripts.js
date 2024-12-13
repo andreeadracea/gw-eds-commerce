@@ -20,7 +20,7 @@ import {
   loadCSS,
   sampleRUM,
 } from './aem.js';
-import { getProduct, getProductVariation, getSkuFromUrl, trackHistory } from './commerce.js';
+import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
 
 const AUDIENCES = {
@@ -143,13 +143,13 @@ async function loadEager(doc) {
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
     const sku = getSkuFromUrl();
-    const variation = getMetadata('isvariation');
-    if (variation) {
-      window.getProductPromise = getProductVariation(sku, variation);
-    }
-    else {
-      window.getProductPromise = getProduct(sku);
-    }
+    //const variation = getMetadata('isvariation');
+    //if (variation) {
+    //  window.getProductPromise = getProductVariation(sku, variation);
+    //}
+    //else {
+    window.getProductPromise = getProduct(sku);
+    //}
 
     preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDetails.js', 'script');
     preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');

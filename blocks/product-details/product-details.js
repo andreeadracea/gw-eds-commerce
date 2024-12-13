@@ -156,7 +156,7 @@ export default async function decorate(block) {
   productApi.setEndpoint(await getConfigValue('commerce-endpoint'));
 
   // Set Fetch Headers (Service)
-  let variation = getVariationFromUrl;
+  let variation = getVariationFromUrl();
   if (variation) {
     productApi.setFetchGraphQlHeaders({
       'Content-Type': 'application/json',

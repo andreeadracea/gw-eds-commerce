@@ -306,6 +306,7 @@ export async function getProduct(sku) {
   return productPromise;
 }
 
+/*
 export async function getProductVariation(sku) {
   if (productsCache[sku]) {
     return productsCache[sku];
@@ -322,6 +323,7 @@ export async function getProductVariation(sku) {
   productsCache[sku] = productPromise;
   return productPromise;
 }
+  */
 
 export async function trackHistory() {
   if (!getConsent('commerce-recommendations')) {
