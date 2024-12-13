@@ -31,14 +31,8 @@ async function setJsonLdProduct(product) {
   const amount = priceRange?.minimum?.final?.amount || price?.final?.amount;
   const brand = attributes.find((attr) => attr.name === 'brand');
 
-  let commerceLaunchId;
-  let metaIsVariation = document.head.querySelector(`meta[name="isvariation"]`);
-  if (metaIsVariation) {
-    commerceLaunchId = metaIsVariation.getAttribute('content');
-  }
-
   // get variants
-  const { variants } = (await performCatalogServiceQuery(variantsQuery, { sku }, commerceLaunchId))?.variants
+  const { variants } = (await performCatalogServiceQuery(variantsQuery, { sku }))?.variants
     || { variants: [] };
 
   const ldJson = {
@@ -162,7 +156,6 @@ export default async function decorate(block) {
   productApi.setEndpoint(await getConfigValue('commerce-endpoint'));
 
   // Set Fetch Headers (Service)
-  //let metaIsVariation = document.head.querySelector(`meta[name="isvariation"]`);
   let variation = getVariationFromUrl;
   if (variation) {
     productApi.setFetchGraphQlHeaders({

@@ -306,11 +306,11 @@ export async function getProduct(sku) {
   return productPromise;
 }
 
-export async function getProductVariation(sku, commerceLaunchId) {
+export async function getProductVariation(sku) {
   if (productsCache[sku]) {
     return productsCache[sku];
   }
-  const rawProductPromise = performCatalogServiceQuery(productDetailQuery, { sku }, commerceLaunchId);
+  const rawProductPromise = performCatalogServiceQuery(productDetailQuery, { sku });
   const productPromise = rawProductPromise.then((productData) => {
     if (!productData?.products?.[0]) {
       return null;
