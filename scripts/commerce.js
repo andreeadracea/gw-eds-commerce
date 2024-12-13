@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export, import/no-cycle */
 import { getConfigValue } from './configs.js';
-import { getConsent } from './scripts.js';
+import { getConsent,  getMetadata } from './scripts.js';
 
 /* Common query fragments */
 export const priceFieldsFragment = `fragment priceFields on ProductViewPrice {
@@ -280,7 +280,7 @@ export function renderPrice(product, format, html = (strings, ...values) => stri
 export function getVariationFromUrl() {
   //const urlParams = new URLSearchParams(window.location.search);
   //return urlParams.get('launchId');
-  const path = window.location.pathname;
+  const path = getMetadata('experiment-variants');
   const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)\/([\w|-]+)$/);
   return result?.[2];
 }
