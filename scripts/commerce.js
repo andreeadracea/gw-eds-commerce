@@ -284,7 +284,7 @@ export function getVariationFromUrl() {
 
 export function getSkuFromUrl() {
   const path = window.location.pathname;
-  const result = path.match(/\/products.*\/[\w|-]+\/([\w|-]+)$/);
+  const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
   return result?.[1];
 }
 
@@ -305,25 +305,6 @@ export async function getProduct(sku) {
   productsCache[sku] = productPromise;
   return productPromise;
 }
-
-/*
-export async function getProductVariation(sku) {
-  if (productsCache[sku]) {
-    return productsCache[sku];
-  }
-  const rawProductPromise = performCatalogServiceQuery(productDetailQuery, { sku });
-  const productPromise = rawProductPromise.then((productData) => {
-    if (!productData?.products?.[0]) {
-      return null;
-    }
-
-    return productData?.products?.[0];
-  });
-
-  productsCache[sku] = productPromise;
-  return productPromise;
-}
-  */
 
 export async function trackHistory() {
   if (!getConsent('commerce-recommendations')) {
