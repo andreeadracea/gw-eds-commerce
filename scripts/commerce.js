@@ -154,15 +154,20 @@ query($sku: String!) {
 /* Common functionality */
 
 export async function performCatalogServiceQuery(query, variables) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
-    'Magento-Website-Code': await getConfigValue('commerce-website-code'),
-    'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
-    'Magento-Store-Code': await getConfigValue('commerce-store-code'),
-    'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
-    'x-api-key': await getConfigValue('commerce-x-api-key'),
-  };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
+      'Magento-Website-Code': await getConfigValue('commerce-website-code'),
+      'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
+      'Magento-Store-Code': await getConfigValue('commerce-store-code'),
+      'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
+      'x-api-key': await getConfigValue('commerce-x-api-key'),
+    };
+    let variation = getVariationFromUrl();
+    if (variation) {
+      headers['Commerce-Launch-Id'] = variation;
+    }
 
   const apiCall = new URL(await getConfigValue('commerce-endpoint'));
   apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
@@ -272,6 +277,10 @@ export function renderPrice(product, format, html = (strings, ...values) => stri
 }
 
 /* PDP specific functionality */
+export function getVariationFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('launchId');;
+}
 
 export function getSkuFromUrl() {
   const path = window.location.pathname;

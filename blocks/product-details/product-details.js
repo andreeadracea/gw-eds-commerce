@@ -11,7 +11,7 @@ import {
   getProduct,
   getSkuFromUrl,
   setJsonLd,
-  loadErrorPage, performCatalogServiceQuery, variantsQuery,
+  loadErrorPage, performCatalogServiceQuery, variantsQuery, getVariationFromUrl,
 } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
 import { fetchPlaceholders } from '../../scripts/aem.js';
@@ -156,15 +156,29 @@ export default async function decorate(block) {
   productApi.setEndpoint(await getConfigValue('commerce-endpoint'));
 
   // Set Fetch Headers (Service)
-  productApi.setFetchGraphQlHeaders({
-    'Content-Type': 'application/json',
-    'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
-    'Magento-Website-Code': await getConfigValue('commerce-website-code'),
-    'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
-    'Magento-Store-Code': await getConfigValue('commerce-store-code'),
-    'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
-    'x-api-key': await getConfigValue('commerce-x-api-key'),
-  });
+  let variation = getVariationFromUrl();
+  if (variation) {
+    productApi.setFetchGraphQlHeaders({
+      'Content-Type': 'application/json',
+      'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
+      'Magento-Website-Code': await getConfigValue('commerce-website-code'),
+      'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
+      'Magento-Store-Code': await getConfigValue('commerce-store-code'),
+      'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
+      'x-api-key': await getConfigValue('commerce-x-api-key'),
+      'Commerce-Launch-Id': variation,
+    });
+  } else {
+    productApi.setFetchGraphQlHeaders({
+      'Content-Type': 'application/json',
+      'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
+      'Magento-Website-Code': await getConfigValue('commerce-website-code'),
+      'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
+      'Magento-Store-Code': await getConfigValue('commerce-store-code'),
+      'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
+      'x-api-key': await getConfigValue('commerce-x-api-key'),
+    });
+  }
 
   events.on('eds/lcp', () => {
     if (!product) {
