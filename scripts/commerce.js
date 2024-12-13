@@ -278,13 +278,21 @@ export function renderPrice(product, format, html = (strings, ...values) => stri
 
 /* PDP specific functionality */
 export function getVariationFromUrl() {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('launchId');;
+  //const urlParams = new URLSearchParams(window.location.search);
+  //return urlParams.get('launchId');
+  const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)\/([\w|-]+)$/);
+  return result?.[2];
 }
 
 export function getSkuFromUrl() {
   const path = window.location.pathname;
-  const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
+  let result;
+  const variation = getVariationFromUrl();
+  if (variation) {
+    result = path.match(/\/products\/[\w|-]+\/([\w|-]+)\/([\w|-]+)$/);
+  } else {
+    result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
+  }
   return result?.[1];
 }
 
