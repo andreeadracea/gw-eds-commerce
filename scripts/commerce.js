@@ -287,12 +287,13 @@ export function getVariationFromUrl() {
 }
 
 export function getSkuFromUrl() {
-  const path = window.location.pathname;
   let result;
   const variation = getVariationFromUrl();
   if (variation) {
+    const path = getMetadata('experiment-variants');
     result = path.match(/\/products\/[\w|-]+\/([\w|-]+)\/([\w|-]+)$/);
   } else {
+    const path = window.location.pathname;
     result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
   }
   return result?.[1];
