@@ -29,6 +29,16 @@ const AUDIENCES = {
   // define your custom audiences here as needed
 };
 
+// Add you templates below
+// window.hlx.templates.add('/templates/my-template');
+
+// Add you plugins below
+window.hlx.plugins.add('experimentation', {
+  condition: () => getMetadata('experiment'),
+  options: { audiences: AUDIENCES },
+  url: '/plugins/experimentation/src/index.js',
+});
+
 /**
  * Gets all the metadata elements that are in the given scope.
  * @param {String} scope The scope/prefix for the metadata
@@ -136,6 +146,8 @@ async function loadEager(doc) {
     const { loadEager: runEager } = await import('../plugins/experimentation/src/index.js');
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
+
+  //await window.hlx.plugins.run('loadEager');
 
   window.adobeDataLayer = window.adobeDataLayer || [];
 
@@ -247,6 +259,8 @@ async function loadLazy(doc) {
     import('./acdl/validate.js');
   }
 
+  //window.hlx.plugins.run('loadLazy');
+
   trackHistory();
 
   // Implement experimentation preview pill
@@ -257,6 +271,7 @@ async function loadLazy(doc) {
     const { loadLazy: runLazy } = await import('../plugins/experimentation/src/index.js');
     await runLazy(document, { audiences: AUDIENCES }, pluginContext);
   }
+  window.hlx.plugins.run('loadLazy');
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 }
@@ -266,7 +281,12 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  window.setTimeout(() => {
+    window.hlx.plugins.load('delayed');
+    window.hlx.plugins.run('loadDelayed');
+    // eslint-disable-next-line import/no-cycle
+    return import('./delayed.js');
+  }, 3000);
   // load anything that can be postponed to the latest here
 }
 
@@ -322,7 +342,9 @@ export function getConsent(topic) {
 }
 
 async function loadPage() {
+  await window.hlx.plugins.load('eager');
   await loadEager(document);
+  await window.hlx.plugins.load('lazy');
   await loadLazy(document);
   loadDelayed();
 }
