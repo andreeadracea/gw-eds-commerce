@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export, import/no-cycle */
 import { getConfigValue } from './configs.js';
-import { getConsent,  getMetadata } from './scripts.js';
+import { getConsent, getMetadata } from './scripts.js';
 
 /* Common query fragments */
 export const priceFieldsFragment = `fragment priceFields on ProductViewPrice {
